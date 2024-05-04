@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>  
+<title>Geim Sht</title>
+<link href="geim.png" rel="shortcut icon">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<!-- mag nanakaw amputa, gumawa ka sarili mo hui! -->
+
+<!-- patay gutom, matuto ka mag search sa google -->
+
+
+
+<style>
+
+ body {
+  background-color: #f0f8ff;
+  margin-top: 10px;
+}
+
+button {
+  background-color: #f0f8ff;
+  border-color: #7a7a7a7a;
+}
+
+img {
+  border-radius: 5px;
+}
+
+ .left {
+  display: flex;
+  justify-content: left;
+  text-align: left;
+}
+
+ .right {
+  display: flex;
+  justify-content: right;
+  text-align: right;
+}
+
+ .center {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.geim1 {
+  float: left;
+  width: 30%;
+}
+
+.geim2 {
+  float: left;
+  width: 45%;
+  padding: 0 20px;
+  overflow: hidden;
+}
+
+.geim3 {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+@media only screen and (max-width:920px) {
+  
+  .geim2 {
+    width: 30%;
+    padding: 0px;
+   }
+   
+  .geim3 {
+    width: 30%;
+  }
+  
+}
+
+@media only screen and (max-width:920px) {
+  
+  .geim1, .geim2, .geim3 {
+    width: 100%;
+  }
+  
+}
+
+.card {
+  box-shadow: 0 0 3px 0 #000000;
+  transition: 0.3s;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.img-circle {
+  border-radius: 50%;
+  border: 2px solid #0096ff;
+  padding: 1px;
+}
+
+.img-circle2 {
+  border-radius: 50%;
+  border: 1px solid #0096ff;
+  padding: 1px;
+}
+
+#myPost {
+  display: block;
+}
+
+#myDetails {
+  display: none;
+}
+
+#mySkills {
+  display: none;
+}
+  
+ .moon {
+  background-color: transparent;
+  box-shadow: -6px 1px 0px 3px #275e8e;
+  border-left:3px solid #27476D;
+  border-radius:50%;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  transition: 3s;
+}
+
+ .sun {
+  background-color: #fdd462;
+  box-shadow: 2px 0px 0px 1px #D19C29;
+  border-radius:50%;
+  margin-right: 15px;
+  width: 26px;
+  height: 26px;
+  transition: 5s;
+}
+  
+</style>
+</head>
+
+<div class="w3-animate-zoom">
+
+
+
+
+<div class="geim1">
+
+<div class="left"
+     style="margin-left: 10px;"
+     >
+  <img class="img-circle" src="geim.png" style="height: 130px; width: 130px;"
+  >
+  
+  <div class="night-toggle"
+     onClick="dayNightMode()" style="margin-left: auto;">
+ <div id="moon" 
+      class="moon"></div>
+      
+</div>
+  
+  
+</div>
+
+<div class="left"
+     style="margin-top: 5px; margin-left: 10px; font-size: 30px;"
+     >Geim Sht
+<img src="verified.png" style="height: 20px; width: 20px; margin-top: 12px; margin-left: 5px;"></img>
+</div>
+
+<div class="left"
+     style="margin-top: 5px; margin-left: 10px; font-size: 20px;"
+     >What the hell is love?
+</div>
+
+
+
+<div class="center"
+     style="margin-top: 20px; margin-left: 10px; margin-right: 10px;"
+     >
+  
+  <a href="https://facebook.com/jxmnbt">
+  <button style="margin-right: 5px; background-color: #0000ff; border-color: #dedede; height: 30px; width: 130px;  color: #ffffff; font-size: 15px;">FOLLOW</button>
+  </a>
+  
+<a href="https://facebook.com/jxmnbt">
+<button style="margin-left: 5px; height: 30px; width: 130px; color: #; font-size: 15px;">MESSAGE</button>
+  </a>
+  
+<button onclick="myDetails()" style="margin-left: 10px; height: 30px; width: 40px; color: #; font-size: 15px;">=</button>
+</div>
+
+
+<div class="center"
+     style="margin-top: 20px; margin-bottom: 50px; margin-left: 10px; margin-right: 10px;"
+     >
+  <button onclick="myPost()" style="margin-right: 5px; background-color: #f0f8ff; border-color: #f0f8ff; height: 40px; width: 140px;  color: #000000; font-size: 20px;">Posts</button>
+  <button onClick="myDetails()" style="margin-left: 5px; background-color: #f0f8ff; border-color: #f0f8ff; height: 40px; width: 140px; color: #000000; font-size: 20px;">Details</button>
+  <button onclick="mySkills()" style="margin-left: 10px; background-color: #f0f8ff; border-color: #f0f8ff; height: 40px; width: 140px; color: #000000; font-size: 20px;">Skills</button>
+</div>
+
+</div>
+
+<!-- POST LAYOUT  -->
+
+<div class="geim2">
+<div id="myPost">
+  
+<div class="card">
+<img class="img-circle2" src="geim.png" style="height: 30px; width: 30px; margin-right: 5px;">Geim Sht<img src="img/verified.png" style="height: 10px; width: 10px; margin-left: 5px;"></img>
+<div> <sup>Aug 29, 2004</sup> </div>
+<div class="center" style="font-size: 20px; margin-bottom: 3px;">Love is war!</div>
+<div class="center"> <img src="kaguya.png" style="height: 180px; width: 300px;"> </div>
+<a class="center" style="margin-top: 10px;" href="your link" class="btn btn-primary btn-square btn-outline-dashed btn-sm waves-effect waves-light"></a>
+</div>
+
+<div class="card">
+<img class="img-circle2" src="geim.png" style="height: 30px; width: 30px; margin-right: 5px;">Geim Sht<img src="img/verified.png" style="height: 10px; width: 10px; margin-left: 5px;"></img>
+<div> <sup>Apr 21, 2024</sup> </div>
+<div class="center" style="font-size: 20px; margin-bottom: 3px;">This is my example post.</div>
+<div class="card">
+<a class="center" style="margin-top: 10px; color: #0000ff;" href="" class="btn btn-primary btn-square btn-outline-dashed btn-sm waves-effect waves-light">CHECK HERE!</a>
+</div>
+</div>
+
+<div class="card">
+<img class="img-circle2" src="geim.png" style="height: 30px; width: 30px; margin-right: 5px;">Geim Sht<img src="img/verified.png" style="height: 10px; width: 10px; margin-left: 5px;"></img>
+<div> <sup>May 4, 2024</sup> </div>
+<div class="center" style="font-size: 20px; margin-bottom: 3px;">Hello World!</div>
+<div class="card">
+<a class="center" style="margin-top: 10px; color: #0000ff;" href="" class="btn btn-primary btn-square btn-outline-dashed btn-sm waves-effect waves-light">DOWNLOAD VIRUS APP</a>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- POST LAYOUT END!!!  -->
+
+<!-- DETAILS LAYOUT  -->
+
+<div class="geim2">
+
+<div id="myDetails">
+<div class="card">
+  <div>Full Name:</div>Geim Sh!t
+</div>
+<div class="card">
+  <div>Nickname:</div>Geim
+</div>
+<div class="card">
+  <div>Birthdate:</div>08/29/24
+</div>
+<div class="card">
+  <div>Email:</div>jxmanabat29@gmail.com
+</div>
+<div class="card">
+  <div>Number:</div>+63 9xxxxxx779
+</div>
+<div class="card">
+  <div>Location:</div>Philippines
+</div>
+</div>
+
+</div>
+
+<!-- DETAILS LAYOUT END!!!  -->
+
+<!-- SKILLS LAYOUT  -->
+
+<div class="geim2">
+
+<div id="mySkills">
+  <div class="card">
+    haven't skill just bored.
+  </div>
+</div>
+
+</div>
+
+<!-- SKILLS LAYOUT END!!!  -->
+
+
+
+
+<!-- 3rd layout by geim -->
+
+
+<div class="geim3">
+<div>
+  <div style="margin-top: 40px; margin-bottom: 20px; font-size: 20px;">SOCIAL MEDIA ACCOUNTS</div></div>
+</div>
+
+<div class="geim3">
+<div class="card">
+  <div>FACEBOOK -------> <a href="" class="btn btn-primary btn-square btn-outline-dashed btn-sm waves-effect waves-light" style="color: #0000ff;">Geim</a> </div></div>
+</div>
+
+<div class="geim3">
+<div class="card">
+  <div>TELEGRAM > <a href="" class="btn btn-primary btn-square btn-outline-dashed btn-sm waves-effect waves-light" style="color: #0000ff;">Gximmm</a> </div></div>
+</div>
+
+<div class="geim3">
+<div class="card">
+  <div>EMAIL --> <a href="" class="btn btn-primary btn-square btn-outline-dashed btn-sm waves-effect waves-light" style="color: #0000ff;">jxmanabat29</a> </div></div>
+</div>
+
+
+<!-- 3rd layout end -->
+
+
+
+
+
+<script>
+function dayNightMode() {
+  let moon = document.getElementById ("moon");
+    if (moon.className=="moon"){
+      moon.className="sun";
+      document.body.style.backgroundColor = "#333333";
+      document.body.style.color = "#ffffff";
+    }
+  else {
+    moon.className ="moon";
+    document.body.style.backgroundColor = "#f0f8ff";
+    document.body.style.color = "#000000";
+  }
+}
+</script>
+
+<script 
+type="text/javascript">
+const audio = new Audio("https://www.fesliyanstudios.com/play-mp3/387");
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    audio.play();
+  });
+});
+</script>
+
+<script>
+function myPost() {
+  var geim = document.getElementById("myPost");
+  var geim2 = document.getElementById("myDetails");
+  var geim3 = document.getElementById("mySkills");
+  if (geim.style.display === "none") {
+    geim.style.display = "block";
+    geim2.style.display = "none";
+    geim3.style.display = "none";
+  } else if (geim.style.display === "block") {
+    geim2.style.display = "none";
+    geim3.style.display = "none";
+  } else {
+    geim.style.display = "block";
+    geim2.style.display = "none";
+    geim3.style.display = "none";
+  }
+}
+</script>
+
+<script>
+function myDetails() {
+  var geim = document.getElementById("myPost");
+  var geim2 = document.getElementById("myDetails");
+  var geim3 = document.getElementById("mySkills");
+  if (geim2.style.display === "none") {
+    geim.style.display = "none";
+    geim2.style.display = "block";
+    geim3.style.display = "none";
+  } else if (geim2.style.display === "block") {
+    geim.style.display = "none";
+    geim3.style.display = "none";
+  } else {
+    geim.style.display = "none";
+    geim2.style.display = "block";
+    geim3.style.display = "none";
+  }
+}
+</script>
+
+<script>
+function mySkills() {
+  var geim = document.getElementById("myPost");
+  var geim2 = document.getElementById("myDetails");
+  var geim3 = document.getElementById("mySkills");
+  if (geim3.style.display === "none") {
+    geim.style.display = "none";
+    geim2.style.display = "none";
+    geim3.style.display = "block";
+  } else if (geim2.style.display === "block") {
+    geim.style.display = "none";
+    geim2.style.display = "none";
+  } else {
+    geim.style.display = "none";
+    geim2.style.display = "none";
+    geim3.style.display = "block";
+  }
+}
+</script>
+
+</div>
+</html>
