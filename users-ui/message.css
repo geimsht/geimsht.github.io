@@ -1,10 +1,4 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-  background: #000;
-}
+
 
 body {
   background-color: #000;
@@ -13,37 +7,36 @@ body {
 }
 
 .topBar {
+  flex-shrink: 0;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  height: 50px;
+  overflow: visible;
   z-index: 1000;
-
+  background-color: transparent;
+  color: #ffffff;
   display: flex;
   align-items: center;
-
+  height: 50px;
+  width: 100%;
   border-bottom: 1px solid #0080ff;
-  background: #000;
+  animation: fadeDown 1.8s;
 }
 
 .bottomBar {
+  flex-shrink: 0;
   position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 80px;
-
+  background-color: transparent;
+  color: #ffffff;
   display: flex;
   align-items: center;
-
+  height: 80px;
+  padding-bottom: 0;
+  width: 100%;
   border-top: 1px solid #0080ff;
-  background: #000;
-
-  z-index: 1000;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  animation: fadeUp 1.8s;
 }
 
 .back-btn {
@@ -205,7 +198,6 @@ body {
 
 
 .chat-box {
-  
     flex: 1;
     padding: 10px;
     overflow-y: auto;
@@ -287,22 +279,18 @@ body {
 }
 
 .msgBg{
-.msgBg {
   position: fixed;
-
-  top: 50px;
+  top: 60px;
   bottom: 80px;
   left: 0;
   right: 0;
-
   overflow-y: auto;
-  overflow-x: hidden;
-
   display: flex;
   flex-direction: column;
-
+  gap: 10px;
   padding: 10px;
-  background: #111;
+  background-color: #1A1A1A;
+  animation: fadeDown 1.8s;
 }
 
 
