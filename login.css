@@ -1,230 +1,260 @@
-<!DOCTYPE html>
-<html>
-<head>
-  
-  <title>Jm Pogi</title>
-  <link rel="stylesheet" href="messageslist.css">
-  
-</head>
-
-<body>
-  
-  <div class="topBar">
-    
-   <div class="pfp">
-     
-      <div class="pfp-bg">
-      <img src="../icon/pfp.jpg">
-      <span class="online-dot"></span>
-      </div> 
-    </div>
-    
-    <div class="nameWithStatus">
-    <div class="name">Jm Pogi
-    <div class="badge">✓</div> </div>
-    <div class="status">Active Now</div>
-    </div>
-    
-    <div class="ddBtnRight">
-    <div class="dropdown">
-    <button class="ddBtn" onclick="toggleSettings()">⚙</button>
-    
-    <div class="dropdown-content" id="settings">
-      <a href="#">Delete All Conversation</a>
-      <a href="#">Logout</a>
-    </div>
-    
-    </div>
-    </div>
-    
-  </div>
-  
-  
-  
-   <div class="msgBg">
-    
-    <div id="userList" class="userMessage-box"></div>
-    
-  </div>
-  
-  
-  
-  
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-getAuth,
-onAuthStateChanged,
-signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-getFirestore,
-collection,
-addDoc,
-query,
-orderBy,
-onSnapshot,
-serverTimestamp,
-deleteDoc,
-getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyADO5HejshUVQvruDPlZGgkohn5Lhcmfxo",
-  authDomain: "chat-system-632f1.firebaseapp.com",
-  projectId: "chat-system-632f1",
-};
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-const userList = document.getElementById("userList");
-
-/* Load all messages and extract unique users */
-const q = query(collection(db,"messages"), orderBy("time","desc"));
-
-onSnapshot(q,(snap)=>{
-
-  const users = new Set();
-
-  snap.forEach(doc=>{
-    const d = doc.data();
-    if(d.sender !== "jm@jm.gagi"){
-      users.add(d.sender);
-    }
-  });
-
-  userList.innerHTML = "";
-
-  users.forEach(email=>{
-
-    const div = document.createElement("div");
-    div.classList.add("userMessage","other");
-    div.innerHTML = `
-      <b>${email}</b><br>
-      Tap to open chat
-    `;
-
-    div.onclick = ()=>{
-      window.location.href = `messages.html?user=${encodeURIComponent(email)}`;
-    };
-
-    userList.appendChild(div);
-  });
-
-});
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
 
 
+body{
+background:#000000;
+display:none;
+justify-content:center;
+align-items:center;
+height:100vh;
+padding:15px;
+overflow:hidden;
+animation:bgFade 1s ease;
+}
 
-/* SETTINGS */
+.box{
+width:100%;
+max-width:340px;
+padding:25px;
+border:2px solid #0080ff;
+border-radius:25px;
+background:#050505;
+text-align:center;
+animation:show .5s ease;
+box-shadow:0 0 25px rgba(0,128,255,.25);
+position:relative;
+overflow:hidden;
+}
 
-window.toggleSettings = function(){
+.box::before{
+content:"";
+position:absolute;
+top:-50%;
+left:-50%;
+width:200%;
+height:200%;
+background:linear-gradient(
+45deg,
+transparent,
+rgba(0,128,255,.12),
+transparent
+);
+animation:shine 5s linear infinite;
+pointer-events:none;
+}
 
-document
-.getElementById("settings")
-.classList.toggle("show");
+@keyframes shine{
 
-};
+0%{
+transform:rotate(0deg);
+}
 
-
-// CLOSE SETTINGS OUTSIDE CLICK
-
-window.onclick = function(event){
-
-if(!event.target.matches('.ddBtn')){
-
-let menu = document.getElementById("settings");
-
-if(menu.classList.contains('show')){
-menu.classList.remove('show');
+100%{
+transform:rotate(360deg);
 }
 
 }
 
-};
+@keyframes bgFade{
 
+from{
+opacity:0;
+}
 
-// CLOSE AFTER CLICK
+to{
+opacity:1;
+}
 
-const items = document.querySelectorAll(".dropdown-content a");
+}
 
-items.forEach(item => {
+@keyframes show{
 
-item.addEventListener("click",()=>{
+from{
+opacity:0;
+transform:scale(.85) translateY(20px);
+}
 
-document
-.getElementById("settings")
-.classList.remove("show");
+to{
+opacity:1;
+transform:scale(1) translateY(0);
+}
 
-});
+}
 
-});
+.logo{
+font-size:32px;
+font-weight:bold;
+color:#0080ff;
+margin-bottom:20px;
+letter-spacing:1px;
+animation:logoPulse 2s infinite;
+position:relative;
+z-index:2;
+}
 
+@keyframes logoPulse{
 
-/* LOGOUT */
+0%{
+transform:scale(1);
+text-shadow:0 0 0px #0080ff;
+}
 
-items[1].addEventListener("click",()=>{
+50%{
+transform:scale(1.05);
+text-shadow:0 0 15px #0080ff;
+}
 
+100%{
+transform:scale(1);
+text-shadow:0 0 0px #0080ff;
+}
 
-const confirmLogout = confirm(
-"Logout Account?"
-);
+}
 
-if(!confirmLogout) return;
+.inputbox{
+position:relative;
+margin-top:15px;
+animation:fadeUp .7s ease;
+z-index:2;
+}
 
+input{
+width:100%;
+padding:14px;
+background:#000000;
+border:2px solid #0080ff;
+border-radius:14px;
+outline:none;
+color:#fff;
+font-size:15px;
+transition:.25s;
+}
 
-signOut(auth).then(()=>{
+input:focus{
+box-shadow:0 0 15px rgba(0,128,255,.6);
+transform:scale(1.02);
+}
 
+input:hover{
+transform:scale(1.01);
+}
 
+.suffix{
+position:absolute;
+right:14px;
+top:50%;
+transform:translateY(-50%);
+color:#777;
+font-size:13px;
+pointer-events:none;
+}
 
-window.location.replace("../authentication/login.html");
+.toggle{
+position:absolute;
+right:14px;
+top:50%;
+transform:translateY(-50%);
+color:#0080ff;
+font-size:13px;
+cursor:pointer;
+user-select:none;
+font-weight:bold;
+transition:.2s;
+}
 
-});
+.toggle:hover{
+transform:translateY(-50%) scale(1.1);
+text-shadow:0 0 10px #0080ff;
+}
 
-});
+button{
+width:100%;
+padding:14px;
+margin-top:20px;
+border:none;
+border-radius:14px;
+background:#0080ff;
+color:#fff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.25s;
+animation:fadeUp .9s ease;
+position:relative;
+z-index:2;
+}
 
+button:hover{
+transform:scale(1.03);
+box-shadow:0 0 20px rgba(0,128,255,.7);
+}
 
-/* DELETE ALL CONVERSATIONS */
+button:active{
+transform:scale(.97);
+}
 
-items[0].addEventListener("click", async()=>{
+#msg{
+margin-top:15px;
+font-size:14px;
+color:#fff;
+word-break:break-word;
+min-height:20px;
+animation:fadeUp 1s ease;
+position:relative;
+z-index:2;
+}
 
-const confirmDelete = confirm(
-"Delete ALL conversations?"
-);
+.loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+color:#0080ff;
+font-size:18px;
+font-weight:bold;
+z-index:9999;
+animation:pulse 1s infinite;
+}
 
-if(!confirmDelete) return;
+@keyframes pulse{
 
-const snap = await getDocs(collection(db,"messages"));
+0%{
+opacity:.5;
+transform:scale(1);
+}
 
-const promises = [];
+50%{
+opacity:1;
+transform:scale(1.08);
+}
 
-snap.forEach((docu)=>{
+100%{
+opacity:.5;
+transform:scale(1);
+}
 
-promises.push(
-  deleteDoc(docu.ref)
-);
+}
 
-});
+@keyframes fadeUp{
 
-await Promise.all(promises);
+from{
+opacity:0;
+transform:translateY(20px);
+}
 
-//alert("All conversations deleted!");
+to{
+opacity:1;
+transform:translateY(0);
+}
 
-});
-
-
-
-
-</script>
-  
-  
-  
-  
-</body>
-</html>
+}
