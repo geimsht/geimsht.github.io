@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <title>Jm Pogi</title>
+  <link rel="stylesheet" href="messageslist.css">
+  
+</head>
+
+<body>
+  
+  <div class="topBar">
+    
+   <div class="pfp">
+     
+      <div class="pfp-bg">
+      <img src="../icon/pfp.jpg">
+      <span class="online-dot"></span>
+      </div> 
+    </div>
+    
+    <div class="nameWithStatus">
+    <div class="name">Jm Pogi
+    <div class="badge">✓</div> </div>
+    <div class="status">Active Now</div>
+    </div>
+    
+    <div class="ddBtnRight">
+    <div class="dropdown">
+    <button class="ddBtn" onclick="toggleSettings()">⚙</button>
+    
+    <div class="dropdown-content" id="settings">
+      <a href="#">Delete All Conversation</a>
+      <a href="#">Logout</a>
+    </div>
+    
+    </div>
+    </div>
+    
+  </div>
+  
+  
+  
+   <div class="msgBg">
+    
+    <div id="userList" class="userMessage-box"></div>
+    
+  </div>
+  
+  
+  
+  
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+query,
+orderBy,
+onSnapshot,
+serverTimestamp,
+deleteDoc,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyADO5HejshUVQvruDPlZGgkohn5Lhcmfxo",
+  authDomain: "chat-system-632f1.firebaseapp.com",
+  projectId: "chat-system-632f1",
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const userList = document.getElementById("userList");
+
+/* Load all messages and extract unique users */
+const q = query(collection(db,"messages"), orderBy("time","desc"));
+
+onSnapshot(q,(snap)=>{
+
+  const users = new Set();
+
+  snap.forEach(doc=>{
+    const d = doc.data();
+    if(d.sender !== "jm@jm.gagi"){
+      users.add(d.sender);
+    }
+  });
+
+  userList.innerHTML = "";
+
+  users.forEach(email=>{
+
+    const div = document.createElement("div");
+    div.classList.add("userMessage","other");
+    div.innerHTML = `
+      <b>${email}</b><br>
+      Tap to open chat
+    `;
+
+    div.onclick = ()=>{
+      window.location.href = `messages.html?user=${encodeURIComponent(email)}`;
+    };
+
+    userList.appendChild(div);
+  });
+
+});
+
+
+
+/* SETTINGS */
+
+window.toggleSettings = function(){
+
+document
+.getElementById("settings")
+.classList.toggle("show");
+
+};
+
+
+// CLOSE SETTINGS OUTSIDE CLICK
+
+window.onclick = function(event){
+
+if(!event.target.matches('.ddBtn')){
+
+let menu = document.getElementById("settings");
+
+if(menu.classList.contains('show')){
+menu.classList.remove('show');
+}
+
+}
+
+};
+
+
+// CLOSE AFTER CLICK
+
+const items = document.querySelectorAll(".dropdown-content a");
+
+items.forEach(item => {
+
+item.addEventListener("click",()=>{
+
+document
+.getElementById("settings")
+.classList.remove("show");
+
+});
+
+});
+
+
+/* LOGOUT */
+
+items[1].addEventListener("click",()=>{
+
+
+const confirmLogout = confirm(
+"Logout Account?"
+);
+
+if(!confirmLogout) return;
+
+
+signOut(auth).then(()=>{
+
+
+
+window.location.replace("../authentication/login.html");
+
+});
+
+});
+
+
+/* DELETE ALL CONVERSATIONS */
+
+items[0].addEventListener("click", async()=>{
+
+const confirmDelete = confirm(
+"Delete ALL conversations?"
+);
+
+if(!confirmDelete) return;
+
+const snap = await getDocs(collection(db,"messages"));
+
+const promises = [];
+
+snap.forEach((docu)=>{
+
+promises.push(
+  deleteDoc(docu.ref)
+);
+
+});
+
+await Promise.all(promises);
+
+//alert("All conversations deleted!");
+
+});
+
+
+
+
+</script>
+  
+  
+  
+  
+</body>
+</html>

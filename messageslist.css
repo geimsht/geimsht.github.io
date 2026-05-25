@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <title>Jm Pogi</title>
+  <link rel="stylesheet" href="messages.css">
+  
+</head>
+
+<body>
+  
+  <div class="topBar">
+    
+   <div class="pfp">
+     
+      <div class="pfp-bg">
+      <img src="../icon/def_pfp.jpg">
+      <span class="online-dot"></span>
+      </div> 
+    </div>
+    
+    <div class="nameWithStatus">
+    <div class="name" id="chatName">
+  <span class="nameText"></span>
+  <div class="badge">✓</div>
+</div>
+    <div class="status">Active Now</div>
+    </div>
+    
+    <div class="ddBtnRight">
+    <div class="dropdown">
+    <button class="ddBtn" onclick="toggleSettings()">⚙</button>
+    
+    <div class="dropdown-content" id="settings">
+      <a href="#">Delete Conversation</a>
+      <a href="#">Logout</a>
+    </div>
+    
+    </div>
+    </div>
+    
+  </div>
+  
+  
+  
+ <div class="msgBg">
+    
+    <div id="chatBox" class="chat-box">
+   
+   
+   
+   </div>
+    
+  </div>
+  
+  
+  
+  <div class="bottomBar">
+    
+    
+    
+    
+    <div class="msgAndSendRow">
+      
+     <textarea class="msgType" id="messageInput" placeholder="Message"></textarea>
+       
+       
+      <button class="msgSend" onclick="sendMessage()">Send</button>
+      
+    </div>
+    
+  </div>
+  
+  
+  
+  
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+query,
+orderBy,
+onSnapshot,
+serverTimestamp,
+deleteDoc,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* FIREBASE */
+
+const firebaseConfig = {
+apiKey: "AIzaSyADO5HejshUVQvruDPlZGgkohn5Lhcmfxo",
+authDomain: "chat-system-632f1.firebaseapp.com",
+projectId: "chat-system-632f1",
+storageBucket: "chat-system-632f1.firebasestorage.app",
+messagingSenderId: "212806827818",
+appId: "1:212806827818:web:61dfdee4d3bd41e31f2853"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const ADMIN_EMAIL = "jm@jm.gagi";
+
+
+/* get selected user */
+const urlParams = new URLSearchParams(window.location.search);
+const selectedUser = urlParams.get("user");
+
+
+
+
+// hidden below unfix badge and how @email
+const displayName = selectedUser.split("@")[0];
+document.querySelector(".nameText").innerText = displayName;
+//document.getElementById("chatName").innerText = selectedUser;
+
+
+
+/* AUTH */
+
+onAuthStateChanged(auth,(user)=>{
+
+if (!user) return window.location.replace("../authentication/login.html");
+if (user.email !== ADMIN_EMAIL) return window.location.replace("../authentication/login.html");
+
+
+loadMessages();
+
+});
+
+
+/* SETTINGS */
+
+window.toggleSettings = function(){
+
+document
+.getElementById("settings")
+.classList.toggle("show");
+
+};
+
+
+// CLOSE SETTINGS OUTSIDE CLICK
+
+window.onclick = function(event){
+
+if(!event.target.matches('.ddBtn')){
+
+let menu = document.getElementById("settings");
+
+if(menu.classList.contains('show')){
+menu.classList.remove('show');
+}
+
+}
+
+};
+
+
+// CLOSE AFTER CLICK
+
+const items = document.querySelectorAll(".dropdown-content a");
+
+items.forEach(item => {
+
+item.addEventListener("click",()=>{
+
+document
+.getElementById("settings")
+.classList.remove("show");
+
+});
+
+});
+
+
+/* LOGOUT */
+
+items[1].addEventListener("click",()=>{
+
+signOut(auth).then(()=>{
+
+window.location.replace("../authentication/login.html");
+
+});
+
+
+
+});
+
+
+/* DELETE CONVERSATION */
+
+items[0].addEventListener("click", async()=>{
+
+const snap = await getDocs(collection(db,"messages"));
+
+snap.forEach(async(docu)=>{
+
+const d = docu.data();
+
+if(
+d.sender === ADMIN_EMAIL ||
+d.receiver === selectedUser
+){
+
+await deleteDoc(docu.ref);
+
+}
+
+});
+
+});
+
+
+/* CHAT */
+
+const chatBox = document.getElementById("chatBox");
+
+const input = document.getElementById("messageInput");
+
+
+function loadMessages(){
+
+const q = query(
+collection(db,"messages"),
+orderBy("time","asc")
+);
+
+onSnapshot(q,(snapshot)=>{
+
+chatBox.innerHTML = "";
+
+snapshot.forEach((docSnap)=>{
+
+const data = docSnap.data();
+
+if (
+  !(
+    (data.sender === ADMIN_EMAIL &&
+     data.receiver === selectedUser) ||
+
+    (data.sender === selectedUser &&
+     data.receiver === ADMIN_EMAIL)
+  )
+) {
+  return;
+}
+
+const msg = document.createElement("div");
+
+msg.classList.add("message");
+
+if(data.sender === ADMIN_EMAIL){
+msg.classList.add("me");
+}else{
+msg.classList.add("other");
+}
+
+msg.innerHTML = data.text.replace(/\n/g,"<br>");
+
+chatBox.appendChild(msg);
+
+});
+
+chatBox.scrollTop = chatBox.scrollHeight;
+
+});
+
+}
+
+
+/* SEND MESSAGE */
+
+window.sendMessage = async function(){
+
+const text = input.value.trim();
+
+if(!text) return;
+
+await addDoc(collection(db,"messages"),{
+
+//text:text,
+text,
+sender:ADMIN_EMAIL,
+receiver:selectedUser,
+time:serverTimestamp()
+
+});
+
+input.value = "";
+
+};
+
+
+/* ENTER = NEW LINE */
+
+input.addEventListener("keydown",function(e){
+
+if(e.key === "Enter"){
+
+/* textarea keeps new line automatically */
+
+}
+
+chatBox.scrollTop = chatBox.scrollHeight;
+
+});
+
+
+/* REMOVE BUTTON FOCUS */
+
+document
+.querySelector(".msgSend")
+.addEventListener("mousedown",(e)=>{
+
+e.preventDefault();
+
+loadMessages();
+
+});
+
+</script>
+  
+  
+  
+  
+</body>
+</html>

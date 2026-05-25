@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Login</title>
+<link rel="stylesheet" href="login.css">
+
+
+</head>
+<body>
+
+<div class="loading" id="loading">
+Loading...
+</div>
+
+<div class="box">
+
+<div class="logo">
+ACCOUNT LOGIN
+</div>
+
+<div class="inputbox">
+<input
+type="text"
+id="username"
+placeholder="Username"
+autocomplete="off"
+>
+<div class="suffix">@jm.gagi</div>
+</div>
+
+<div class="inputbox">
+<input
+type="password"
+id="password"
+placeholder="Password"
+autocomplete="off"
+>
+<div
+class="toggle"
+onclick="togglePass()"
+id="toggle"
+>
+SHOW
+</div>
+</div>
+
+<button onclick="login()">
+LOGIN
+</button>
+
+<div id="msg"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+signInWithEmailAndPassword,
+createUserWithEmailAndPassword,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyADO5HejshUVQvruDPlZGgkohn5Lhcmfxo",
+authDomain: "chat-system-632f1.firebaseapp.com",
+projectId: "chat-system-632f1",
+storageBucket: "chat-system-632f1.firebasestorage.app",
+messagingSenderId: "212806827818",
+appId: "1:212806827818:web:61dfdee4d3bd41e31f2853"
+
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const ADMIN_USER = "jm";
+
+const ADMIN_EMAIL =
+"jm@jm.gagi".toLowerCase();
+
+onAuthStateChanged(auth, async (user)=>{
+
+if(user){
+
+try{
+
+await user.reload();
+
+}catch(e){}
+
+const currentEmail =
+(user.email || "").toLowerCase();
+
+if(currentEmail === ADMIN_EMAIL){
+
+window.location.replace("../admin-ui/messageslist.html");
+
+}else{
+
+window.location.replace("../users-ui/message.html");
+
+}
+
+return;
+
+}
+
+document.body.style.display = "flex";
+
+const loading =
+document.getElementById("loading");
+
+if(loading){
+
+loading.remove();
+
+}
+
+});
+
+window.togglePass = function(){
+
+const pass =
+document.getElementById("password");
+
+const toggle =
+document.getElementById("toggle");
+
+if(pass.type === "password"){
+
+pass.type = "text";
+toggle.innerText = "HIDE";
+
+}else{
+
+pass.type = "password";
+toggle.innerText = "SHOW";
+
+}
+
+};
+
+window.login = async function(){
+
+const username =
+document
+.getElementById("username")
+.value
+.trim()
+.toLowerCase();
+
+const password =
+document
+.getElementById("password")
+.value;
+
+const msg =
+document.getElementById("msg");
+
+if(!username || !password){
+
+msg.innerText = "Complete fields";
+return;
+
+}
+
+const email =
+username + "@jm.gagi";
+
+try{
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+redirectUser(username);
+
+}catch(error){
+
+try{
+
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+redirectUser(username);
+
+}catch(createError){
+
+msg.innerText =
+createError.message;
+
+}
+
+}
+
+};
+
+function redirectUser(username){
+
+if(username === ADMIN_USER){
+
+window.location.replace("../admin-ui/messageslist.html");
+
+}else{
+
+window.location.replace("../users-ui/message.html");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
