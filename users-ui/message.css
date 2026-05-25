@@ -198,8 +198,6 @@ body {
 
 
 .chat-box {
-
-  height: 100dvh;
   
     flex: 1;
     padding: 10px;
@@ -283,17 +281,21 @@ body {
 
 .msgBg{
   position: fixed;
-  top: 60px;
-  bottom: 80px;
+  top: 51px;
+  bottom: 81px;
   left: 0;
   right: 0;
+
   overflow-y: auto;
+  overflow-x: hidden;
+
   display: flex;
   flex-direction: column;
-  gap: 10px;
+
   padding: 10px;
   background-color: #1A1A1A;
-  animation: fadeDown 1.8s;
+
+  -webkit-overflow-scrolling: touch;
 }
 
 
