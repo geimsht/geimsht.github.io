@@ -1,7 +1,9 @@
 html, body {
+  margin: 0;
+  padding: 0;
   height: 100%;
   overflow: hidden;
-  margin: 0;
+  background: #000;
 }
 
 body {
@@ -11,36 +13,37 @@ body {
 }
 
 .topBar {
-  flex-shrink: 0;
   position: fixed;
-  overflow: visible;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 50px;
   z-index: 1000;
-  background-color: transparent;
-  color: #ffffff;
+
   display: flex;
   align-items: center;
-  height: 50px;
-  width: 100%;
+
   border-bottom: 1px solid #0080ff;
-  animation: fadeDown 1.8s;
+  background: #000;
 }
 
 .bottomBar {
-  flex-shrink: 0;
-  position: sticky;
-  background-color: transparent;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  height: 80px;
-  padding-bottom: 0;
-  width: 100%;
-  border-top: 1px solid #0080ff;
-  bottom: 0;
+  position: fixed;
+
   left: 0;
   right: 0;
-  z-index: 2000;
-  animation: fadeUp 1.8s;
+  bottom: 0;
+
+  height: 80px;
+
+  display: flex;
+  align-items: center;
+
+  border-top: 1px solid #0080ff;
+  background: #000;
+
+  z-index: 1000;
 }
 
 .back-btn {
@@ -284,9 +287,11 @@ body {
 }
 
 .msgBg{
+.msgBg {
   position: fixed;
-  top: 51px;
-  bottom: 81px;
+
+  top: 50px;
+  bottom: 80px;
   left: 0;
   right: 0;
 
@@ -297,9 +302,7 @@ body {
   flex-direction: column;
 
   padding: 10px;
-  background-color: #1A1A1A;
-
-  -webkit-overflow-scrolling: touch;
+  background: #111;
 }
 
 
