@@ -22,6 +22,10 @@ body {
 }
 
 .bottomBar {
+
+
+padding-bottom: env(safe-area-inset-bottom);
+  
   flex-shrink: 0;
   position: fixed;
   background-color: transparent;
