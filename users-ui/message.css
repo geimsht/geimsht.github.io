@@ -23,7 +23,7 @@ body {
 
 .bottomBar {
   flex-shrink: 0;
-  position: fixed;
+  position: sticky;
   background-color: transparent;
   color: #ffffff;
   display: flex;
